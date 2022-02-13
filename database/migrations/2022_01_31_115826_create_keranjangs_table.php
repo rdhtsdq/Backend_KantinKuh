@@ -15,7 +15,6 @@ class CreateKeranjangsTable extends Migration
     {
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->uuid("kode_keranjang")->primary();
-            $table->integer('jumlah');
             $table->text('keterangan')->nullable(true);
             $table->timestamps();
         });

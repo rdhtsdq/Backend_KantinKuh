@@ -14,8 +14,9 @@ class CreateKeranjangProductsTable extends Migration
     public function up()
     {
         Schema::create('keranjang_products', function (Blueprint $table) {
-            $table->foreignUuid('kode')->references('kode')->on('products')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignUuid('kode_keranjang')->references('kode_keranjang')->on('keranjangs')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('kode')->references('kode')->on('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer("jumlah");
             $table->timestamps();
         });
     }

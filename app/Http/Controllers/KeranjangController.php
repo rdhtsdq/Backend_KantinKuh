@@ -33,107 +33,120 @@ class KeranjangController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(),[
-            'kode_keranjang' => ['required'],
-            'jumlah' => ['required']
-        ]);
-        if ($validator->fails()) {
-            return response()->json(
-                $validator->errors(),
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
-        try{
-            $keranjang = Keranjang::create([
-                'kode_keranjang' => $request->kode_keranjang,
-                'jumlah' => $request->jumlah,
-                'keterangan' => $request->keterangan
-            ]);
+	{
+		// Validasi Data dari request
+		$validator = Validator::make($request->all(), [
+			'kode_keranjang' => ['required'],
+			'kode' => ['required'],
+			'jumlah' => ['required']
+		]);
+		if ($validator->fails()) {
+			return response()->json(
+				$validator->errors(),
+				Response::HTTP_UNPROCESSABLE_ENTITY
+			);
+		}
+
+		// Insert Data
+
+		try {
+
+			$jumlah = $request->jumlah;
+			$product = $request->kode;
+
+			Keranjang::create([
+				'kode_keranjang' => $request->kode_keranjang,
+				'keterangan' => $request->keterangan
+			]);
 
 
-            $kode = Keranjang::findOrFail($request->kode_keranjang);
-            $kode->product()->attach($request->kode);
+			$kode = Keranjang::find($request->kode_keranjang);
+			$sync_data = [];
+			for ($i = 0; $i < count($product); $i++) {
+				$sync_data[$product[$i]] = ['jumlah' => $jumlah[$i]];
+				$kode->product()->sync($sync_data);
+			}
 
-            $response = [
-                "message" => "data berhasil dibuat",
-                "data" => $keranjang
-            ];
+			$hasil = Keranjang::findOrFail($request->kode_keranjang);
+			$response = [
+				"message" => "data berhasil dibuat",
+				"data" => $hasil
+			];
 
-            return response()->json($response, Response::HTTP_CREATED);
+			return response()->json($response, Response::HTTP_CREATED);
+		} 
+		catch (QueryException $e) {
+			$response = [
+				"message" => "gagal",
+				"error" => $e->errorInfo
+			];
+			return response()->json($response);
+		}
+	}
 
-        }catch(QueryException $e){
-            $response = [
-                "message" => "gagal",
-                "error" => $e->errorInfo
-            ];
-            return response()->json($response);
-        }
-    }
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show($kode_keranjang)
+	{
+		$keranjang = Keranjang::with('product')->findOrFail($kode_keranjang);
+		$response = [
+			"message" => "data keranjang by id",
+			"data" => $keranjang
+		];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($kode_keranjang)
-    {
-        $keranjang = Keranjang::with('product')->findOrFail($kode_keranjang);
-        $response = [
-            "message" => "data keranjang by id",
-            "data" => $keranjang
-        ];
+		return response()->json($response, Response::HTTP_OK);
+	}
 
-        return response()->json($response,Response::HTTP_OK);
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $kode_keranjang)
+	{
+		$product = $request->kode;
+		$jumlah = $request->jumlah;
+		$keranjang = Keranjang::findOrFail($kode_keranjang);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $kode_keranjang)
-    {
-        $keranjang = Keranjang::findOrFail($kode_keranjang);
-        if (empty($request->get('kode'))) {
-            $validator = Validator::make($request->all(),[
-                'jumlah' => ['required']
-            ]);
-            if($validator->fails()){
-                return response()->json([
-                    $validator->errors(),
-                    Response::HTTP_UNPROCESSABLE_ENTITY
-                ]);
-            }
-            $keranjang->update($request->all());
-            $response = [
-                "message" => "data berhasil diperbarui",
-                "data" => $keranjang
-            ];
+		if (!empty($request->get('kode'))) {
+			$validator = Validator::make($request->all(), [
+				'jumlah' => ['required'],
+				'kode' => ['required']
+			]);
+			if ($validator->fails()) {
+				return response()->json([
+					$validator->errors(),
+					Response::HTTP_UNPROCESSABLE_ENTITY
+				]);
+			}
+			try {
+				$sync_data = [];
+			for ($i = 0; $i < count($product); $i++) {
+				$sync_data[$product[$i]] = ['jumlah' => $jumlah[$i]];
+				$keranjang->product()->sync($sync_data);
+			}
+				$response = [
+					"message" => "data berhasil diperbarui",
+					"data" => $keranjang
+				];
 
-            return response()->json($response,Response::HTTP_OK);
-        }else{
-            $validator = Validator::make($request->all(),[
-                'jumlah' => ['required']
-            ]);
-            if($validator->fails()){
-                return response()->json([
-                    $validator->errors(),
-                    Response::HTTP_UNPROCESSABLE_ENTITY
-                ]);
-            }
-            $keranjang->update($request->all());
-            $keranjang->product()->attach($request->get('kode'));
-            $response = [
-                "message" => "data berhasil diperbarui",
-                "data" => $keranjang
-            ];
-            return response()->json($response,Response::HTTP_OK);
-        }
-    }
+				return response()->json($response,Response::HTTP_OK);
+			} catch (QueryException $e ) {
+				$response = [
+					"message" => "gagal",
+					"error" => $e->errorInfo
+				];
+				return response()->json($response);
+			}
+			
+		} 
+	}
 
     /**
      * Remove the specified resource from storage.
