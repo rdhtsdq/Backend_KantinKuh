@@ -129,7 +129,7 @@ class KeranjangController extends Controller
 				$sync_data = [];
 			for ($i = 0; $i < count($product); $i++) {
 				$sync_data[$product[$i]] = ['jumlah' => $jumlah[$i]];
-				$keranjang->product()->sync($sync_data);
+				$keranjang->product()->attach($sync_data);
 			}
 				$response = [
 					"message" => "data berhasil diperbarui",

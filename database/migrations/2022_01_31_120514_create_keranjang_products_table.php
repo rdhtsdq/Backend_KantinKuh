@@ -17,6 +17,7 @@ class CreateKeranjangProductsTable extends Migration
             $table->foreignUuid('kode_keranjang')->references('kode_keranjang')->on('keranjangs')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignUuid('kode')->references('kode')->on('products')->onDelete('cascade')->onUpdate('cascade');
             $table->integer("jumlah");
+            $table->text('keterangan')->nullable(true);
             $table->timestamps();
         });
     }
