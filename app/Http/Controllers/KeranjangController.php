@@ -113,6 +113,7 @@ class KeranjangController extends Controller
 		$product = $request->kode;
 		$jumlah = $request->jumlah;
 		$keranjang = Keranjang::findOrFail($kode_keranjang);
+		$keterangan = $request->keterangan;
 
 		if (!empty($request->get('kode'))) {
 			$validator = Validator::make($request->all(), [
@@ -128,8 +129,8 @@ class KeranjangController extends Controller
 			try {
 				$sync_data = [];
 			for ($i = 0; $i < count($product); $i++) {
-				$sync_data[$product[$i]] = ['jumlah' => $jumlah[$i]];
-				$keranjang->product()->attach($sync_data);
+				$sync_data[$product[$i]] = ['jumlah' => $jumlah[$i],'keterangan' => $keterangan[$i]];
+				$keranjang->product()->sync($sync_data);
 			}
 				$response = [
 					"message" => "data berhasil diperbarui",

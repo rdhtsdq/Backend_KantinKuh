@@ -31,7 +31,7 @@ Route::delete('/product/{kode}',[ProductController::class,'destroy']);
 Route::get('/keranjang',[KeranjangController::class,'index']);
 Route::post('/keranjang',[KeranjangController::class,'store']);
 Route::get('/keranjang/{kode_keranjang}',[KeranjangController::class,'show']);
-Route::put('/keranjang/{kode_keranjang}',[KeranjangController::class,'update']);
+Route::patch('/keranjang/{kode_keranjang}',[KeranjangController::class,'update']);
 Route::delete('/keranjang/{kode_keranjang}',[KeranjangController::class,'destroy']);
 
 Route::get('/transaction',[TransactionController::class,'index']);
