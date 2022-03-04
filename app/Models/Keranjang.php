@@ -13,7 +13,7 @@ class Keranjang extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['kode_keranjang','jumlah','keterangan'];
+    protected $fillable = ['kode_keranjang','jumlah'];
 
     public function product()
     {
