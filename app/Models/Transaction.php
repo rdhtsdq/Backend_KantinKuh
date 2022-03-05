@@ -19,4 +19,8 @@ class Transaction extends Model
     {
         return $this->hasMany(Keranjang::class,'kode_keranjang','kode_keranjang');
     }
+    public function product()
+    {
+        return $this->hasManyThrough(Product::class,Keranjang::class,"kode_keranjang","kode","kode","kode_keranjang");
+    }
 }

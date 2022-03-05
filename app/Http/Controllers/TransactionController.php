@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Keranjang;
+use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -17,10 +19,21 @@ class TransactionController extends Controller
 	 */
 	public function index()
 	{
+		$result = [];
 		$transaction = Transaction::with('keranjang')->orderBy('created_at','DESC')->get();
+		$keranjang = new Keranjang();
+		foreach ($transaction as $tr) {
+			// dd($tr->kode_keranjang);
+			// $product = Product::findOrFail($tr->keranjang->kode_keranjang);
+			$hasilproduk = $keranjang->find($tr->kode_keranjang)->product()->get();
+			array_push($result,(object)[
+				"transaction" => $transaction,
+				"product" => $hasilproduk
+			]);
+		}
 		$response = [
-			"message" => "data transaksi",
-			"data" => $transaction
+			"message" => "data transaksi beserta keranjang dan produk",
+			"data" => $result
 		];
 		return response()->json($response,Response::HTTP_OK);
 	}
@@ -55,7 +68,7 @@ class TransactionController extends Controller
 				// ]
 		);
 			$response = [
-				'message' => 'Produk Berhasil Dibuat',
+				'message' => 'Transaksi Berhasil Dibuat',
 				'data' => $transaction,
 			];
 
@@ -78,10 +91,26 @@ class TransactionController extends Controller
 	 */
 	public function show($kode_transaksi)
 	{
+		$result = [];
 		$transaction = Transaction::with('keranjang')->findOrFail($kode_transaksi);
+		$keranjang = new Keranjang();
+		// foreach ($transaction as $tr) {
+		// 	// dd($tr->kode_keranjang);
+		// 	// $product = Product::findOrFail($tr->keranjang->kode_keranjang);
+		// 	$hasilproduk = $keranjang->find()->product()->get();
+		// 	array_push($result,(object)[
+		// 		"transaction" => $transaction,
+		// 		"product" => $hasilproduk
+		// 	]);
+		// }
+	  $product = $keranjang->find($kode_transaksi)->product()->get();
+		array_push($result,(object)[
+			"keranjang" => $keranjang,
+			"product" => $product
+		]);
 		$response = [
-			"message" => "transaksi by kode",
-			"data" => $transaction
+			"message" => "data transaksi beserta keranjang dan produk",
+			"data" => $result
 		];
 
 		return response()->json($response,Response::HTTP_OK);

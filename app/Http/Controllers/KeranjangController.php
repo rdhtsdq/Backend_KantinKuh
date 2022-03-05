@@ -92,7 +92,7 @@ class KeranjangController extends Controller
 	 */
 	public function show($kode_keranjang)
 	{
-		$keranjang = Keranjang::with('product')->findOrFail($kode_keranjang);
+		$keranjang = Keranjang::with('product','transaction')->findOrFail($kode_keranjang);
 		$response = [
 			"message" => "data keranjang by id",
 			"data" => $keranjang

@@ -66,9 +66,11 @@ class ProductController extends Controller
 
             return response()->json($response, Response::HTTP_CREATED);
         } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed " . $e->errorInfo . $request,
-            ]);
+            $response = [
+				"message" => "gagal",
+				"error" => $e->errorInfo
+			];
+			return response()->json($response);
         }
     }
 
