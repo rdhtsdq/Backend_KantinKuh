@@ -61,11 +61,6 @@ class TransactionController extends Controller
 		try {
 			$transaction = Transaction::create(
 				$request->all()
-				// [
-				// 'kode_keranjang' => $request->nama,
-				// 'nama' => $request->harga,
-				// 'telepon' => $request->status
-				// ]
 		);
 			$response = [
 				'message' => 'Transaksi Berhasil Dibuat',
@@ -94,18 +89,9 @@ class TransactionController extends Controller
 		$result = [];
 		$transaction = Transaction::with('keranjang')->findOrFail($kode_transaksi);
 		$keranjang = new Keranjang();
-		// foreach ($transaction as $tr) {
-		// 	// dd($tr->kode_keranjang);
-		// 	// $product = Product::findOrFail($tr->keranjang->kode_keranjang);
-		// 	$hasilproduk = $keranjang->find()->product()->get();
-		// 	array_push($result,(object)[
-		// 		"transaction" => $transaction,
-		// 		"product" => $hasilproduk
-		// 	]);
-		// }
 	  $product = $keranjang->find($kode_transaksi)->product()->get();
 		array_push($result,(object)[
-			"keranjang" => $keranjang,
+			"Transaksi & Keranjang" => $transaction,
 			"product" => $product
 		]);
 		$response = [
