@@ -17,6 +17,7 @@ class KeranjangController extends Controller
      */
     public function index()
     {
+
         $keranjang = Keranjang::with('product','transaction')->orderBy('created_at','DESC')->get();
         $response = [
             "message" => "Data Keranjang dengan produk dan transaksi",
@@ -35,6 +36,8 @@ class KeranjangController extends Controller
     public function store(Request $request)
 	{
 		// Validasi Data dari request
+		// $nama_gambar = $request->gambar;
+		// $gambar = $request->file($nama_gambar)->store('gambar');
 		$validator = Validator::make($request->all(), [
 			'kode_keranjang' => ['required'],
 			'kode' => ['required'],
@@ -172,4 +175,14 @@ class KeranjangController extends Controller
             return response()->json($response);
         }
     }
+		public function storegambar(Request $req)
+		{
+			
+			$gambar = $req->file('kode')->store('gambar');
+			return response()->json(["gambar" => $gambar],Response::HTTP_OK);
+		}
+		public function getgambar()
+		{
+			
+		}
 }
