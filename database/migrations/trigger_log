@@ -3,7 +3,7 @@ DELIMITER $$
 CREATE TRIGGER log_produk
 AFTER UPDATE 
 ON products 
-FOR FOR EACH ROW
+FOR EACH ROW
 BEGIN
     INSERT INTO log_product
     set nama = old.nama,

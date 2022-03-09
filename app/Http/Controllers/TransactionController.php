@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Keranjang;
-use App\Models\Product;
+// use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
@@ -19,21 +20,10 @@ class TransactionController extends Controller
 	 */
 	public function index()
 	{
-		$result = [];
-		$transaction = Transaction::with('keranjang')->orderBy('created_at','DESC')->get();
-		$keranjang = new Keranjang();
-		foreach ($transaction as $tr) {
-			// dd($tr->kode_keranjang);
-			// $product = Product::findOrFail($tr->keranjang->kode_keranjang);
-			$hasilproduk = $keranjang->find($tr->kode_keranjang)->product()->get();
-			array_push($result,(object)[
-				"transaction" => $transaction,
-				"product" => $hasilproduk
-			]);
-		}
+		$transaction = Transaction::with('keranjang.product')->orderBy('created_at','DESC')->get();
 		$response = [
 			"message" => "data transaksi beserta keranjang dan produk",
-			"data" => $result
+			"data" => $transaction
 		];
 		return response()->json($response,Response::HTTP_OK);
 	}
@@ -87,12 +77,13 @@ class TransactionController extends Controller
 	public function show($kode_transaksi)
 	{
 		$result = [];
-		$transaction = Transaction::with('keranjang')->findOrFail($kode_transaksi);
-		$keranjang = new Keranjang();
-	  $product = $keranjang->find($kode_transaksi)->product()->get();
+		$transaction = Transaction::with('keranjang.product')->findOrFail($kode_transaksi);
+		// $product = Transaction::with('keranjang')->keranjang->product;
+		// $keranjang = Keranjang::find($kode_transaksi)->product->get();
+		// dd($transaction);
 		array_push($result,(object)[
-			"Transaksi & Keranjang" => $transaction,
-			"product" => $product
+			"Transaksi" => $transaction,
+			// "product" => $product
 		]);
 		$response = [
 			"message" => "data transaksi beserta keranjang dan produk",

@@ -183,6 +183,5 @@ class KeranjangController extends Controller
 		}
 		public function getgambar()
 		{
-			
 		}
 }
