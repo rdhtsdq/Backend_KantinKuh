@@ -78,7 +78,7 @@ class TransactionController extends Controller
 	{
 		$result = [];
 		$transaction = Transaction::with('keranjang.product')->findOrFail($kode_transaksi);
-		// $product = Transaction::with('keranjang')->keranjang->product;
+		// $product = Transaction::with('keranjang.product')->keranjang->product;
 		// $keranjang = Keranjang::find($kode_transaksi)->product->get();
 		// dd($transaction);
 		array_push($result,(object)[
