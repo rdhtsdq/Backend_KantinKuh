@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Arr;
 
 class ProductController extends Controller
 {
@@ -17,13 +19,28 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $data = [];
         $product = Product::orderBy('created_at','DESC')->get();
-        $reponse = [
-            "message" => "data product",
-            "data" => $product
-        ];
+        foreach ($product as $pr ) {
+            // $url = '127.0.0.1:8000' . Storage::url($pr->gambar);
+            $url = asset("storage/image/".$pr->gambar);
+            $response = [
+                "data" => [
+                    "kode" => $pr->kode,
+                    "nama" => $pr->nama,
+                    "harga" => $pr->harga,
+                    "gambar" => $pr->gambar,
+                    "status" => $pr->status,
+                    "kategori" => $pr->kategori,
+                    "image_url" => $url
+                ],
+            ];
+            array_push($data,$response);
+        }
 
-        return response()->json($reponse,Response::HTTP_OK);
+
+
+        return response()->json($data,Response::HTTP_OK);
     }
 
     /**
@@ -39,7 +56,7 @@ class ProductController extends Controller
             'nama' => ['required'],
             'harga' => ['required','numeric'],
             'status' => ['required','in:ada,habis'],
-            'gambar' => ['required'],
+            'gambar' => ['required','mimes:jpg,bmp,png'],
             'kategori' => ['required','in:food,drink,snack']
         ]);
 
@@ -50,17 +67,21 @@ class ProductController extends Controller
             );
         }
         try {
+            $folder = "image";
+            $image = $request->file('gambar');
+            $path = $image->store($folder,'public');
             $produk = product::create([
                 'kode' => $request->kode,
                 'nama' => $request->nama,
                 'harga' => $request->harga,
                 'status' => $request->status,
-                'gambar' => $request->gambar,
+                'gambar' => basename($path),
                 'kategori' => $request->kategori
             ]);
             $response = [
                 'message' => 'Produk Berhasil Dibuat',
                 'data' => $produk,
+                'image_url' => '127.0.0.1:8000' . Storage::url($path)
             ];
 
 
@@ -83,9 +104,12 @@ class ProductController extends Controller
     public function show($kode)
     {
         $product = Product::findOrFail($kode);
+        $image = $product->gambar;
+        $url = Storage::url($image);
         $response = [
             "message" => "product by kode",
-            "data" => $product
+            "data" => $product,
+            "image" => '127.0.0.1:8000' . $url
         ];
 
         return response()->json($response,Response::HTTP_OK);

@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/product',[ProductController::class,'index']);
 Route::post('/product',[ProductController::class,'store']);
 Route::get('/product/{kode}',[ProductController::class,'show']);
-Route::put('/product/{kode}',[ProductController::class,'update']);
+Route::patch('/product/{kode}',[ProductController::class,'update']);
 Route::delete('/product/{kode}',[ProductController::class,'destroy']);
 
 Route::get('/keranjang',[KeranjangController::class,'index']);
@@ -42,4 +42,6 @@ Route::delete('/transaction/{kode_transaksi}',[TransactionController::class,'des
 
 Route::post('login', [LoginController::class, 'login']);
 Route::delete('logout', [LoginController::class, 'logout']);
+
+Route::post("/g",[KeranjangController::class,'storegambar']);
 
