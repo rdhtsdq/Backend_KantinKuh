@@ -78,16 +78,9 @@ class TransactionController extends Controller
 	{
 		$result = [];
 		$transaction = Transaction::with('keranjang.product')->findOrFail($kode_transaksi);
-		// $product = Transaction::with('keranjang')->keranjang->product;
-		// $keranjang = Keranjang::find($kode_transaksi)->product->get();
-		// dd($transaction);
-		array_push($result,(object)[
-			"Transaksi" => $transaction,
-			// "product" => $product
-		]);
 		$response = [
 			"message" => "data transaksi beserta keranjang dan produk",
-			"data" => $result
+			"data" => $transaction
 		];
 
 		return response()->json($response,Response::HTTP_OK);
