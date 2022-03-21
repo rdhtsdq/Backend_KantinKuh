@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\CobaEvent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/cobaEvent',function(){
+    $r = [
+      'hiiii' => 'halooo'  
+    ];
+    broadcast(new CobaEvent($r));
+    return $r;
 });

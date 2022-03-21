@@ -19,6 +19,8 @@ class CreateTransactionsTable extends Migration
             $table->string("nama");
             $table->string("meja");
             $table->string("telepon");
+            $table->integer("harga");
+            $table->enum("status",['lunas','belum']);
             $table->timestamps();
         });
     }
