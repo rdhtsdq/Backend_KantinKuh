@@ -13,7 +13,7 @@ class Transaction extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['kode_transaksi','kode_keranjang','nama','telepon','meja'];
+    protected $fillable = ['kode_transaksi','kode_keranjang','nama','telepon','meja','harga','status'];
 
     public function keranjang()
     {

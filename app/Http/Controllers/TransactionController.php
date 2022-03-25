@@ -39,7 +39,9 @@ class TransactionController extends Controller
 		$validator = Validator::make($request->all(),[
 			'kode_keranjang' => ['required'],
 			'nama' => ['required'],
-			'telepon' => ['required']
+			'harga' => ['required'],
+			'telepon' => ['required'],
+			'status' => ['required','in:lunas,belum']
 		]);
 
 		if($validator->fails()){
@@ -97,9 +99,9 @@ class TransactionController extends Controller
 	{
 		$transaction = Transaction::findOrFail($kode_transaksi);
 		$validator = Validator::make($request->all(),[
-			'kode_keranjang' => ['required'],
-			'nama' => ['required'],
-			'telepon' => ['required']
+			// 'kode_keranjang' => ['required'],
+			// 'nama' => ['required'],
+			// 'telepon' => ['required']
 		]);
 
 		if($validator->fails()){

@@ -37,7 +37,7 @@ Route::delete('/keranjang/{kode_keranjang}',[KeranjangController::class,'destroy
 Route::get('/transaction',[TransactionController::class,'index']);
 Route::post('/transaction',[TransactionController::class,'store']);
 Route::get('/transaction/{kode_transaksi}',[TransactionController::class,'show']);
-Route::put('/transaction/{kode_transaksi}',[TransactionController::class,'update']);
+Route::patch('/transaction/{kode_transaksi}',[TransactionController::class,'update']);
 Route::delete('/transaction/{kode_transaksi}',[TransactionController::class,'destroy']);
 
 Route::post('login', [LoginController::class, 'login']);
