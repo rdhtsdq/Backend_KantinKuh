@@ -21,6 +21,7 @@ class LogProduct extends Migration
             $table->string("harga_baru");
             $table->string("gambar");
             $table->string("gambar_baru");
+            $table->string("keterangan");
             $table->time("waktu");
         }
     );

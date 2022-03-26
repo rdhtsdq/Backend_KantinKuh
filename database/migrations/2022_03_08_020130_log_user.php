@@ -18,6 +18,7 @@ class LogUser extends Migration
             $table->string("username_baru");
             $table->string("password");
             $table->string("password_baru");
+            $table->string("keterangan");
             $table->time("waktu");
 
         });

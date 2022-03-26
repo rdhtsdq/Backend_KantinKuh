@@ -1,25 +1,48 @@
 //log products
+//updated
+    DELIMITER $$
+    CREATE TRIGGER log_produk_updated
+    AFTER UPDATE 
+    ON products 
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO log_product
+        set nama = old.nama,
+        nama_baru = IFNULL(new.nama,old.nama),
+        harga = old.harga,
+        harga_baru = IFNULL(new.harga,old.harga),
+        gambar = old.gambar,
+        gambar_baru = IFNULL(new.gambar,old.gambar),
+        keterangan = 'updated',
+        waktu = NOW();
+    END$$
+    DELIMITER ;
+
+//deleted
 DELIMITER $$
-CREATE TRIGGER log_produk
-AFTER UPDATE 
-ON products 
-FOR EACH ROW
-BEGIN
-    INSERT INTO log_product
-    set nama = old.nama,
-    nama_baru = IFNULL(new.nama,old.nama),
-    harga = old.harga,
-    harga_baru = IFNULL(new.harga,old.harga),
-    gambar = old.gambar,
-    gambar_baru = IFNULL(new.gambar,old.gambar),
-    waktu = NOW();
-END$$
-DELIMITER ;
+    CREATE TRIGGER log_produk_deleted
+    AFTER delete
+    ON products 
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO log_product
+        set nama = old.nama,
+        nama_baru = old.nama,
+        harga = old.harga,
+        harga_baru = old.harga,
+        gambar = old.gambar,
+        gambar_baru = old.gambar,
+        keterangan = 'deleted',
+        waktu = NOW();
+    END$$
+    DELIMITER ;
+
+
 
 //log users
-
+//updated
 DELIMITER $$
-CREATE TRIGGER log_user
+CREATE TRIGGER log_user_updated
 AFTER UPDATE 
 ON users 
 FOR EACH ROW
@@ -29,6 +52,24 @@ BEGIN
     username_baru = IFNULL(new.username,old.username),
     password = old.password,
     password_baru = IFNULL(new.password,old.password),
+    keterangan = 'updated',
+    waktu = NOW();
+END$$
+DELIMITER ;
+
+//deleted
+DELIMITER $$
+CREATE TRIGGER log_user_deleted
+AFTER DELETE 
+ON users 
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_user
+    set username = old.username,
+    username_baru = old.username,
+    password = old.password,
+    password_baru = old.password,
+    keterangan = 'deleted',
     waktu = NOW();
 END$$
 DELIMITER ;
