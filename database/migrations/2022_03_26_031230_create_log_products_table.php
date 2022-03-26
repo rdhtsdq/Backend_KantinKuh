@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class LogProduct extends Migration
+class CreateLogProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class LogProduct extends Migration
      */
     public function up()
     {
-        Schema::create('log_product',function (Blueprint $table){
+        Schema::create('log_products', function (Blueprint $table) {
             $table->id("log_id");
             $table->string("nama");
             $table->string("nama_baru");
@@ -23,8 +23,7 @@ class LogProduct extends Migration
             $table->string("gambar_baru");
             $table->string("keterangan");
             $table->time("waktu");
-        }
-    );
+        });
     }
 
     /**
@@ -34,6 +33,6 @@ class LogProduct extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('log_produc');
+        Schema::dropIfExists('log_products');
     }
 }
