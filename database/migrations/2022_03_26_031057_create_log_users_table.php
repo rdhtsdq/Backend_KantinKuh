@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateLogUsersTable extends Migration
@@ -22,6 +23,37 @@ class CreateLogUsersTable extends Migration
             $table->time("waktu");$table->id();
             $table->timestamps();
         });
+
+        DB::statement("
+        CREATE TRIGGER log_user_updated
+        AFTER UPDATE 
+        ON users 
+        FOR EACH ROW
+        BEGIN
+            INSERT INTO log_users
+            set username = old.username,
+            username_baru = IFNULL(new.username,old.username),
+            password = old.password,
+            password_baru = IFNULL(new.password,old.password),
+            keterangan = 'updated',
+            waktu = NOW();
+        END
+        ");
+        DB::statement("
+        CREATE TRIGGER log_user_deleted
+        AFTER DELETE 
+        ON users 
+        FOR EACH ROW
+        BEGIN
+            INSERT INTO log_users
+            set username = old.username,
+            username_baru = old.username,
+            password = old.password,
+            password_baru = old.password,
+            keterangan = 'deleted',
+            waktu = NOW();
+        END
+        ");
     }
 
     /**
@@ -31,6 +63,9 @@ class CreateLogUsersTable extends Migration
      */
     public function down()
     {
+        DB::statement("DROP TRIGGER IF EXISTS `log_user_updated`");
+        DB::statement("DROP TRIGGER IF EXISTS `log_user_deleted`");
+        
         Schema::dropIfExists('log_users');
     }
 }

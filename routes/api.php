@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\coba;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\log_and_trigger;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
@@ -39,6 +41,10 @@ Route::post('/transaction',[TransactionController::class,'store']);
 Route::get('/transaction/{kode_transaksi}',[TransactionController::class,'show']);
 Route::patch('/transaction/{kode_transaksi}',[TransactionController::class,'update']);
 Route::delete('/transaction/{kode_transaksi}',[TransactionController::class,'destroy']);
+
+Route::get('/log/user',[log_and_trigger::class,'log_user']);
+Route::get('/log/product',[log_and_trigger::class,'log_product']);
+Route::get('/log/view',[log_and_trigger::class,'SelectView']);
 
 Route::post('login', [LoginController::class, 'login']);
 Route::delete('logout', [LoginController::class, 'logout']);
