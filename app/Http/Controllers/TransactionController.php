@@ -41,7 +41,7 @@ class TransactionController extends Controller
 			'nama' => ['required'],
 			'harga' => ['required'],
 			'telepon' => ['required'],
-			'status' => ['required','in:lunas,belum']
+			'status' => ['required','in:menunggu,dimasak,hidangkan']
 		]);
 
 		if($validator->fails()){
