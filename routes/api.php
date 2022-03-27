@@ -45,6 +45,7 @@ Route::delete('/transaction/{kode_transaksi}',[TransactionController::class,'des
 Route::get('/log/user',[log_and_trigger::class,'log_user']);
 Route::get('/log/product',[log_and_trigger::class,'log_product']);
 Route::get('/log/view',[log_and_trigger::class,'SelectView']);
+Route::get('/log/view/laporan',[log_and_trigger::class,'ShowView']);
 
 Route::post('login', [LoginController::class, 'login']);
 Route::delete('logout', [LoginController::class, 'logout']);

@@ -29,4 +29,10 @@ class log_and_trigger extends Controller
 
         return response()->json($data,Response::HTTP_OK);
     }
+    public function ShowView()
+    {
+        $data = DB::select("SELECT jumlah , nama , total ,SUM(total) as semua_pemasukan from laporan");
+
+        return response()->json($data,Response::HTTP_OK);
+    }
 }
