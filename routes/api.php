@@ -6,6 +6,7 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\log_and_trigger;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,3 +53,16 @@ Route::delete('logout', [LoginController::class, 'logout']);
 
 Route::post("/g",[KeranjangController::class,'storegambar']);
 
+Route::get("pass", function() { return bcrypt('rakunTua'); });
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('me', [AuthController::class, 'me']);
+
+});

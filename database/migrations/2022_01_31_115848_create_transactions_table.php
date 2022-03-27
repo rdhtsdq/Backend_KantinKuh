@@ -20,7 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->string("meja");
             $table->string("telepon");
             $table->integer("harga");
-            $table->enum("status",['lunas','belum']);
+            $table->enum("status",['menunggu', 'dimasak','hidangkan']);
             $table->timestamps();
         });
     }
