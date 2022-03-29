@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class log_and_trigger extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function log_product()
     {
         $log = log_product::all();
