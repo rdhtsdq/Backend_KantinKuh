@@ -10,6 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class KeranjangController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

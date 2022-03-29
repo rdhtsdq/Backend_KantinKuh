@@ -14,7 +14,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'csrf']]);
     }
 
     /**
@@ -63,6 +63,14 @@ class AuthController extends Controller
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
+    }
+
+    public function csrf(){
+      $token = csrf_token();
+      return response()->json([
+        'csrf' => $token,
+        'hai' => 'hai'
+      ]);
     }
 
     /**

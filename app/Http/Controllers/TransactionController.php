@@ -13,6 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('auth:api', ['only' => ['update', 'destroy']]);
+  }
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -41,7 +45,7 @@ class TransactionController extends Controller
 			'nama' => ['required'],
 			'harga' => ['required'],
 			'telepon' => ['required'],
-			'status' => ['required','in:lunas,belum']
+			'status' => ['required','in:menunggu,dimasak,hidangkan']
 		]);
 
 		if($validator->fails()){
