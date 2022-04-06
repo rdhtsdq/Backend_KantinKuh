@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/product',[ProductController::class,'index']);
 Route::get('/product/{kode}',[ProductController::class,'show']);
+Route::get('/popular',[ProductController::class,'mostPopular']);
 
 Route::get('/keranjang',[KeranjangController::class,'index']);
 Route::get('/keranjang/{kode_keranjang}',[KeranjangController::class,'show']);

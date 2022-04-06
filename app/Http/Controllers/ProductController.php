@@ -8,14 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Arr;
-
+use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['index', 'show']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show','mostPopular']]);
     }
     /**
      * Display a listing of the resource.
@@ -193,5 +192,15 @@ class ProductController extends Controller
             ];
             return response()->json($response);
         }
+    }
+    public function mostPopular()
+    {
+        $data = DB::select('SELECT nama,jumlah FROM laporan ORDER BY jumlah DESC LIMIT 3');
+        return response()->json([
+            "message" => "data most popular",
+            "data" => $data
+        ],
+        Response::HTTP_OK
+    );
     }
 }
