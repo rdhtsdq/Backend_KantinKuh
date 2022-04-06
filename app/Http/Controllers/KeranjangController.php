@@ -47,7 +47,8 @@ class KeranjangController extends Controller
 		$validator = Validator::make($request->all(), [
 			'kode_keranjang' => ['required'],
 			'kode' => ['required'],
-			'jumlah' => ['required']
+			'jumlah' => ['required'],
+			'keterangan' => ['required']
 		]);
 		if ($validator->fails()) {
 			return response()->json(
@@ -62,6 +63,7 @@ class KeranjangController extends Controller
 
 			$jumlah = $request->jumlah;
 			$product = $request->kode;
+			$keterangan = $request->keterangan;
 
 			Keranjang::create([
 				'kode_keranjang' => $request->kode_keranjang,
@@ -72,7 +74,7 @@ class KeranjangController extends Controller
 			$kode = Keranjang::find($request->kode_keranjang);
 			$sync_data = [];
 			for ($i = 0; $i < count($product); $i++) {
-				$sync_data[$product[$i]] = ['jumlah' => $jumlah[$i]];
+				$sync_data[$product[$i]] = ['jumlah' => $jumlah[$i],'keterangan' => $keterangan[$i]];
 				$kode->product()->sync($sync_data);
 			}
 
