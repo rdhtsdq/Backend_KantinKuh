@@ -76,7 +76,9 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
   Route::get('/log/view',[log_and_trigger::class,'SelectView']);
   Route::get('/log/view/laporan',[log_and_trigger::class,'ShowView']);
   Route::get('/log/laporan/bulanan/{bulan}',[log_and_trigger::class,"Perbulan"]);
+  Route::get('/log/laporan/bulanan/{bulan}/jumlah',[log_and_trigger::class,"JumlahPerbulan"]);
   Route::get('/log/laporan/tahunan/{tahun}',[log_and_trigger::class,"Pertahun"]);
+  Route::get('/log/laporan/tahunan/{tahun}/jumlah',[log_and_trigger::class,"JumlahPertahun"]);
 
   //route pengeluaran
   Route::get('/pengeluaran',[PengeluaranController::class,"index"]);

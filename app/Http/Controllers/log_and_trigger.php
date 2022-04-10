@@ -51,12 +51,35 @@ class log_and_trigger extends Controller
         Response::HTTP_OK
     );
     }
+    public function JumlahPerbulan($bulan)
+    {
+        $data = DB::select("SELECT SUM('jumlah') as jumlah FROM laporan WHERE month('waktu') = $bulan ");
+        return response()->json([
+            "message" => "ok",
+            "data" => $data
+        ],
+        Response::HTTP_OK
+    );
+
+
+    }
 
     public function Pertahun($tahun)
     {
         $data = DB::table('laporan')->whereYear("waktu",'=',$tahun)->get();
         return response()->json([
             "message" => "data pertahun",
+            "data" => $data
+        ],
+        Response::HTTP_OK
+    );
+    }
+
+    public function JumlahPertahun($tahun)
+    {
+        $data = DB::select("SELECT SUM('jumlah') as jumlah FROM laporan WHERE year('waktu') = $tahun");
+        return response()->json([
+            "message" => "ok",
             "data" => $data
         ],
         Response::HTTP_OK
