@@ -41,4 +41,26 @@ class log_and_trigger extends Controller
 
         return response()->json($data,Response::HTTP_OK);
     }
+    public function Perbulan($bulan)
+    {
+        $data = DB::table('laporan')->whereMonth("waktu","=",$bulan)->get();
+        return response()->json([
+            "message" => "data perbulan",
+            "data" => $data
+        ],
+        Response::HTTP_OK
+    );
+    }
+
+    public function Pertahun($tahun)
+    {
+        $data = DB::table('laporan')->whereYear("waktu",'=',$tahun)->get();
+        return response()->json([
+            "message" => "data pertahun",
+            "data" => $data
+        ],
+        Response::HTTP_OK
+    );
+    }
+
 }

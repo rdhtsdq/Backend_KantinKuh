@@ -7,6 +7,8 @@ use App\Http\Controllers\log_and_trigger;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PengeluaranController;
+use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -73,4 +75,13 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
   Route::get('/log/product',[log_and_trigger::class,'log_product']);
   Route::get('/log/view',[log_and_trigger::class,'SelectView']);
   Route::get('/log/view/laporan',[log_and_trigger::class,'ShowView']);
+  Route::get('/log/laporan/bulanan/{bulan}',[log_and_trigger::class,"Perbulan"]);
+  Route::get('/log/laporan/tahunan/{tahun}',[log_and_trigger::class,"Pertahun"]);
+
+  //route pengeluaran
+  Route::get('/pengeluaran',[PengeluaranController::class,"index"]);
+  Route::post('/pengeluaran',[PengeluaranController::class,"store"]);
+  Route::get('/pengeluaran/{id_pengeluaran}',[PengeluaranController::class,"show"]);
+  Route::patch('/pengeluaran/{id_pengeluaran}',[PengeluaranController::class,"update"]);
+  Route::delete('/pengeluaran/{id_pengeluaran}',[PengeluaranController::class,"destroy"]);
 });
