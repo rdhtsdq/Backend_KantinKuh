@@ -86,4 +86,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
   Route::get('/pengeluaran/{id_pengeluaran}',[PengeluaranController::class,"show"]);
   Route::patch('/pengeluaran/{id_pengeluaran}',[PengeluaranController::class,"update"]);
   Route::delete('/pengeluaran/{id_pengeluaran}',[PengeluaranController::class,"destroy"]);
+  Route::get('/pengeluaran/bulan/{bulan}',[PengeluaranController::class,'perbulan']);
+  Route::get('/pengeluaran/tahun/{tahun}',[PengeluaranController::class,'pertahun']);
 });

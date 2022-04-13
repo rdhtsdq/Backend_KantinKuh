@@ -6,6 +6,8 @@ use App\Models\Pengeluaran;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -117,5 +119,23 @@ class PengeluaranController extends Controller
             Response::HTTP_UNPROCESSABLE_ENTITY
         );
         }
+    }
+    public function perbulan($bulan)
+    {
+        $all = Pengeluaran::whereMonth("created_at","=",$bulan)->get();
+        $jumlah = DB::select("SELECT SUM(jumlah) AS jumlah FROM pengeluarans where month(created_at) = $bulan");
+        $data = [
+            $all,$jumlah
+        ];
+        return response()->json($data,200);
+    }
+
+    public function pertahun($tahun)
+    {
+        $all = Pengeluaran::whereYear("created_at","=",$tahun)->get();
+
+        $jumlah = DB::select("SELECT SUM(jumlah) AS jumlah FROM pengeluarans where year(created_at) = $tahun");
+        $data = [$all,$jumlah];
+        return response()->json($data,200);
     }
 }
